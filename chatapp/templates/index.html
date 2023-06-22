@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Room</title>
+
+  <style>
+    /* ... стили ... */
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-box">
+      <div id="chat-container" class="chat-messages"></div>
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="сюда набирай буквы..." autocomplete="off">
+        <button id="send">отправить</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#send').on('click', function() {
+        sendMessage();
+      });
+
+      $('#user-input').on('keydown', function(e) {
+        if (e.which === 13) {
+          sendMessage();
+        }
+      });
+
+      function sendMessage() {
+        var userInput = $('#user-input').val();
+        if (userInput.trim() === '') {
+          return;
+        }
+
+        // Отображение сообщения пользователя
+        var userMessage = '<div class="user-message">' + userInput + '</div>';
+        $('#chat-container').append(userMessage);
+
+        // Очистка поля ввода
+        $('#user-input').val('');
+
+        // Отправка сообщения на сервер для /process_json
+        $.ajax({
+          url: 'http://127.0.0.1:8000/process_json/',
+          type: 'POST',
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify({ 'text': userInput }),
+          success: function(response) {
+            // Обработка ответа от бэкэнда для /process_json
+            var aiResponse = response.response;
+
+            // Отображение сообщения искусственного интеллекта для /process_json
+            var aiMessage = '<div class="ai-message">' + aiResponse + '</div>';
+            $('#chat-container').append(aiMessage);
+
+            // Прокрутка вниз для отображения нового сообщения
+            var chatContainer = document.getElementById('chat-container');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          },
+          error: function(xhr, status, error) {
+            console.error('Ошибка при отправке запроса:', error);
+          }
+        });
+
+        // Отправка сообщения на сервер для /prompt
+        $.ajax({
+          url: 'http://127.0.0.1:8000/process_json2/',
+          type: 'POST',
+          dataType: 'json',
+          contentType: 'application/json',
+          data: JSON.stringify({ 'text': userInput }),
+          success: function(response) {
+            // Обработка ответа от бэкэнда для /prompt
+            var promptResponse = response.response;
+
+            // Отображение сообщения искусственного интеллекта для /prompt
+            var promptMessage = '<div class="ai-message">' + promptResponse + '</div>';
+            $('#chat-container').append(promptMessage);
+
+            // Прокрутка вниз для отображения нового сообщения
+            var chatContainer = document.getElementById('chat-container');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+          },
+          error: function(xhr, status, error) {
+            console.error('Ошибка при отправке запроса:', error);
+          }
+        });
+      }
+    })
+  </script>
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ru">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title>Chat Room</title>-->
+<!--&lt;!&ndash;  <h1 style="color: white;">Backend | scumesc </h1>&ndash;&gt;-->
+
+<!--  <style>-->
+<!--    body {-->
+<!--      margin: 0;-->
+<!--      padding: 0;-->
+<!--      background: black;-->
+<!--      background-size: cover;-->
+<!--    }-->
+
+<!--    .chat-container {-->
+<!--      position: fixed;-->
+<!--      bottom: 20px;-->
+<!--          right: 20px;-->
+<!--      display: flex;-->
+<!--      flex-direction: column;-->
+<!--      align-items: flex-end;-->
+<!--      max-width: 400px;-->
+<!--    }-->
+
+<!--    .chat-box {-->
+<!--      background-color: rgba(0, 0, 0, 0.7);-->
+<!--      color: #ffffff;-->
+<!--      padding: 20px;-->
+<!--      border-radius: 10px;-->
+<!--      box-sizing: border-box;-->
+<!--      width: 100%;-->
+<!--      max-height: 300px;-->
+<!--      overflow-y: auto;-->
+<!--    }-->
+
+<!--    .chat-input {-->
+<!--      display: flex;-->
+<!--      align-items: center;-->
+<!--      margin-top: 10px;-->
+<!--    }-->
+
+<!--     .chat-input input[type="text"] {-->
+<!--      flex: 1;-->
+<!--      padding: 10px;-->
+<!--      border: none;-->
+<!--      border-radius: 5px;-->
+<!--      background-color: #2b2b2b;-->
+<!--      color: #ffffff;-->
+<!--    }-->
+
+<!--    .chat-input button {-->
+<!--      background-color: #4CAF50;-->
+<!--      color: white;-->
+<!--      border: none;-->
+<!--      padding: 10px 20px;-->
+<!--      border-radius: 5px;-->
+<!--      margin-left: 10px;-->
+<!--      cursor: pointer;-->
+<!--    }-->
+
+<!--    .chat-input button:hover {-->
+<!--      background-color: #mes;-->
+<!--    }-->
+
+<!--    .user-message {-->
+<!--      background-color: #2b2b2b;-->
+<!--      padding: 10px;-->
+<!--      border-radius: 5px;-->
+<!--      margin-bottom: 10px;-->
+<!--    }-->
+
+<!--    .ai-message {-->
+<!--      background-color: #333333;-->
+<!--      padding: 10px;-->
+<!--    }-->
+<!--  </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--  <div class="chat-container">-->
+<!--    <div class="chat-box">-->
+<!--      <div id="chat-container" class="chat-messages"></div>-->
+<!--      <div class="chat-input">-->
+<!--        <input type="text" id="user-input" placeholder="сюда набирай буквы..." autocomplete="off">-->
+<!--        <button  id="send">отправить</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--  <script>-->
+<!--    $(document).ready(function() {-->
+<!--      $('#send').on('click', function() {-->
+<!--        sendMessage();-->
+<!--      });-->
+
+<!--      $('#user-input').on('keydown', function(e) {-->
+<!--        if (e.which === 13) {-->
+<!--          sendMessage();-->
+<!--        }-->
+<!--      });-->
+
+<!--      function sendMessage() {-->
+<!--        var userInput = $('#user-input').val();-->
+<!--        if (userInput.trim() === '') {-->
+<!--          return;-->
+<!--        }-->
+
+<!--        // Отображение сообщения пользователя-->
+<!--        var userMessage = '<div class="user-message">' + userInput + '</div>';-->
+<!--        $('#chat-container').append(userMessage);-->
+
+<!--        // Очистка поля ввода-->
+<!--        $('#user-input').val('');-->
+
+<!--        // Отправка сообщения на сервер-->
+<!--        $.ajax({-->
+<!--          url: 'http://127.0.0.1:8000/process_json/',-->
+<!--          type: 'POST',-->
+<!--          dataType: 'json',-->
+<!--          contentType: 'application/json',-->
+<!--          data: JSON.stringify({ 'text': userInput }),-->
+<!--          success: function(response) {-->
+<!--            // Обработка ответа от бэкэнда-->
+<!--            var aiResponse = response.response;-->
+
+<!--            // Отображение сообщения искусственного интеллекта-->
+<!--            var aiMessage = '<div class="ai-message">' + aiResponse + '</div>';-->
+<!--            $('#chat-container').append(aiMessage);-->
+
+<!--            // Прокрутка вниз для отображения нового сообщения-->
+<!--            var chatContainer = document.getElementById('chat-container');-->
+<!--            chatContainer.scrollTop = chatContainer.scrollHeight;-->
+<!--          },-->
+<!--          error: function(xhr, status, error) {-->
+<!--            console.error('Ошибка при отправке запроса:', error);-->
+<!--          }-->
+<!--        });-->
+<!--      }-->
+<!--    })-->
+<!--  </script>-->
+<!--</body>-->
+<!--</html>-->

@@ -1,0 +1,21 @@
+ddatabases:
+  - name: scymescweb
+    databaseName: mysite
+    user: scumesc
+
+services:
+  - type: web
+    name: mysite
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn backend.wsgi:application"
+    autoDeploy: false
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mysite
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
