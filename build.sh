@@ -1,9 +1,3 @@
-#!/usr/bin/env bash
-# exit on error
-set -o errexit
+pip install -r build.sh
 
-poetry install
-
-python manage.py collectstatic --no-input
 python manage.py migrate
-python pip install -r requirements.txt
