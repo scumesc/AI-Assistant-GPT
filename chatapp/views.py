@@ -36,8 +36,9 @@ def funcgpt(user_prompt):
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "ты асистент помпошник плотформы ModMe Online"},
-            {"role": "assistant", "content": f""},
-            {"role": "assistant", "content": f""},
+            {"role": "assistant", "content": f"генерируй ответы в трех языках"
+                                             f" смотря на каком языке написал ползователь в основом это "
+                                             f"русский, узбекский и инданезийский"},
             {"role": "user", "content": user_prompt},
 
         ]
