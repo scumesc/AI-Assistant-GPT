@@ -7,7 +7,8 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 
-openai.api_key = "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" #dumsterdev
+#Dumster Key
+openai.api_key = "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"
 
 
 @ensure_csrf_cookie
@@ -27,7 +28,7 @@ def process_json(request):
 
     except json.JSONDecodeError as e:
 
-        error_message = {'error': 'Invalid JSON data'}
+        error_message = {'error': 'Invalid JSON data  + ошибка на Frontend'}
         return JsonResponse(error_message, status=400)
 
 

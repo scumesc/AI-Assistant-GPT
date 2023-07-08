@@ -15,4 +15,3 @@ urlpatterns = [
     path('process_json2/', process_json2, name='process_json2'),
 
 ]
-
