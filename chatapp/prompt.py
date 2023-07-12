@@ -21,6 +21,7 @@ def process_json2(request):
         error_message = {'error': 'Invalid JSON data'}
         return JsonResponse(error_message, status=400)
 
+
 def funcgpt2(user_prompt):
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
