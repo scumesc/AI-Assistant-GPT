@@ -62,11 +62,8 @@ def funcgpt(user_prompt):
         )
 
         return response['choices'][0]['message']['content']
-
     except Exception as e:
-        # If there's an error, return it as a string to display on the frontend
-        return "📌 Лимит превышен три" \
-               "запроса в минуту!!!"
+        return "📌 Вы превысили ограничение на запросы.\nЛимит составляет 3 запроса в минуту !"
 
 
 
